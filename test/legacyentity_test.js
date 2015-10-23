@@ -3,7 +3,7 @@ suite("LegacyEntity", function() {
   var slugid  = require('slugid');
   var _       = require('lodash');
   var Promise = require('promise');
-  var base    = require('../');
+  var subject = require('../');
   var config  = require('taskcluster-lib-config');
   var debug   = require('debug')('base:test:entity');
 
@@ -27,7 +27,7 @@ suite("LegacyEntity", function() {
   }
 
   // Configure an abstract Item to play with...
-  var AbstractItem = base.LegacyEntity.configure({
+  var AbstractItem = subject.configure({
     mapping: [
       {key: 'PartitionKey', property: 'pk',   type: 'string'},
       {key: 'RowKey',       property: 'rk',   type: 'encodedstring'},
@@ -46,7 +46,7 @@ suite("LegacyEntity", function() {
   });
 
   // Configure an abstract Item with keystring to play with...
-  var AbstractKeyStringItem = base.LegacyEntity.configure({
+  var AbstractKeyStringItem = subject.configure({
     mapping: [
       {key: 'PartitionKey', property: 'pk',   type: 'keystring'},
       {key: 'RowKey',       property: 'rk',   type: 'keystring'},
@@ -65,8 +65,8 @@ suite("LegacyEntity", function() {
   });
 
   test("Item has class methods from LegacyEntity", function() {
-    _.keys(base.LegacyEntity).forEach(function(k) {
-      assert(Item[k] === base.LegacyEntity[k], "Item missing key: " + k);
+    _.keys(subject).forEach(function(k) {
+      assert(Item[k] === subject[k], "Item missing key: " + k);
     });
   });
 
@@ -214,7 +214,7 @@ suite("LegacyEntity", function() {
     }).then(function(item) {
       assert(item instanceof Item,          "item isn't instanceof Item");
       assert(item instanceof AbstractItem,  "item isn't instanceof AbstractItem");
-      assert(item instanceof base.LegacyEntity,
+      assert(item instanceof subject,
              "item isn't instanceof LegacyEntity");
     });
   });
