@@ -8,3 +8,18 @@ script: npm test
 before_install:
 - openssl aes-256-cbc -K $encrypted_3ef9ab604ef5_key -iv $encrypted_3ef9ab604ef5_iv
   -in taskcluster-base-test.conf.json.enc -out taskcluster-base-test.conf.json -d
+
+# encrpyt channel name to get around issue
+# https://github.com/travis-ci/travis-ci/issues/1094
+notifications:
+  irc:
+    channels:
+      # encrpyted string was "irc.mozilla.org#taskcluster-bots"
+      - secure: "hwi12enW6eVdXOPbRlVOQf9h63NJaloM3hq87pt4Wtjmn9ft1nMld57OdV65sL4e5Q/9NVvhFZDB9UYVcabRVKiCf7T2cVLDrIM5n4SQWWFuK7MiRRnGtIQbdHQ67WmjgYdSELqmgrard1CAie5aOFON1iQvLqcfFmIGIVI8gh4oAootnTG7pyNTe73yCX2fJOyLGr2dDogxD+GlmFwaSqewRQbKz6X+88UaeONQ+QWTzCn5TPO303IkCfrZfsGxxe8Da79qojN3b7j0Te4cTxncIWxZFFJamV2rk/bbBKVwNJNAlYh5FJ0JY/Pydfm33PYQhTFkFRGrwg/jrF/yybZ8CpCPgL+oXFlLLKoiI/n5bGs/NJr+swMYOI9snQX6MprZVe6xdA1y2Q7B7dBzoQ6JDchNTh3TPHLFIhQKWdaj/oZZsM0d1ozE0bLtkAKXI+10aArJjnheLts+aRnJuM6MfvW0STwnQy6xNb9YKSjqNvGaYY66TTt9ilaJ/zaKVWjIe7nNdhETZ3wuBGBPlZvw/J4efk/aoWpRbaSzPxycWD7oSoJdSVWx3CiNVdkEZPmWfD4rXVALeX/+lG+R3JX+vf60E/qDoV5NM5pR9A5LGoZgq4kt6Ri+mVElSREKB/RvOIBskc2eXCuE1UIzTvW/JMEPfuy48R3XACy6ZYs="
+    on_success: change
+    on_failure: always
+    template:
+      - "%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}"
+      - "Change view : %{compare_url}"
+      - "Build details : %{build_url}"
+      - "Commit message : %{commit_message}"
